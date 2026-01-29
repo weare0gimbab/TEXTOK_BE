@@ -9,10 +9,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaAuditing
 // @Scheduled 활성화를 위한 어노테이션
 @EnableScheduling
-public class Aibe3FinalProjectTeam4Application {
+public class TextokApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Aibe3FinalProjectTeam4Application.class, args);
+        SpringApplication.run(TextokApplication.class, args);
     }
 
 }

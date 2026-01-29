@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: textok-backend
+
   config:
     activate:
       on-profile: ci

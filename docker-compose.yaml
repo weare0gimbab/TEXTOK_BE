@@ -6,7 +6,7 @@ services:
   # ------------------
   mysql:
     image: mysql:8.0
-    container_name: next5_mysql
+    container_name: textok_mysql
     environment:
       MYSQL_ROOT_PASSWORD: root123414
       MYSQL_DATABASE: next5_db
@@ -24,7 +24,7 @@ services:
   # ------------------
   redis:
     image: redis:7.2
-    container_name: next5_redis
+    container_name: textok_redis
     ports:
       - "6379:6379"
     networks:
@@ -35,7 +35,7 @@ services:
   # ------------------
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.18.8
-    container_name: next5-elasticsearch
+    container_name: textok-es
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
@@ -55,7 +55,7 @@ services:
   # ------------------
   kibana:
     image: docker.elastic.co/kibana/kibana:8.18.8
-    container_name: next5-kibana
+    container_name: textok-kibana
     environment:
       SERVER_NAME: kibana
       ELASTICSEARCH_HOSTS: http://next5-elasticsearch:9200
@@ -72,7 +72,7 @@ services:
   # ------------------
   logstash:
     image: docker.elastic.co/logstash/logstash:8.18.8
-    container_name: next5-logstash
+    container_name: textok-logstash
     user: root
     environment:
       - LS_JAVA_OPTS=-Xms512m -Xmx512m
