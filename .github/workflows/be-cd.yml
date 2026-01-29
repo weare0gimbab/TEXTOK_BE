@@ -75,4 +75,4 @@ jobs:
 
       # 10) Done
       - name: Deployment completed
-        run: echo "🎉 Backend CD (Build → Push → Deploy) finished successfully!"
+        run: echo "🎉 Backend CD finished successfully!"
