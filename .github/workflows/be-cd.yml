@@ -10,7 +10,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: weare0gimbab/aibe3-finalproject-team4-backend
+  IMAGE_NAME: weare0gimbab/textok-backend
 
 jobs:
   build-test-push-deploy:
