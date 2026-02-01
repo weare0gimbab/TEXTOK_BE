@@ -12,13 +12,14 @@ public class Rq {
     private final HttpServletResponse httpServletResponse;
 
     public void setCookie(String name, String value) {
-        if (value == null) value = "";
+        if (value == null)
+            value = "";
 
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
-                .domain(".textok.site")
+                .domain(".textok.store")
                 .path("/")
                 .maxAge(value.isBlank() ? 0 : -1)
                 .build();

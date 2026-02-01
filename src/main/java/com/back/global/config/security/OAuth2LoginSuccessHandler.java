@@ -26,7 +26,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException{
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) throws IOException {
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
         Long userId = securityUser.getId();
         User user = userRepository.findById(userId).orElseThrow();
@@ -34,7 +35,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 소셜 가입은 프로필 완성 페이지로 리다이렉트, 이후 컨트롤러에서 별도 토큰 발급
         String nickname = user.getNickname();
         if (nickname == null) {
-            String targetUrl = "https://www.textok.site/auth/register/step2";
+            String targetUrl = "https://www.textok.store/auth/register/step2";
             String token = jwtTokenProvider.generateTemporaryToken(userId);
             System.out.println("임시 토큰이 발급되었습니다. : " + token);
             String redirectUrlWithToken = targetUrl + "?token=" + token;
@@ -54,6 +55,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         rq.setCookie("accessToken", accessToken);
         rq.setCookie("refreshToken", refreshToken);
 
-        response.sendRedirect("https://www.textok.site/");
-     }
+        response.sendRedirect("https://www.textok.store/");
+    }
 }
