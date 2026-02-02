@@ -4,6 +4,9 @@
 “짧은 글부터 깊이 있는 글까지  
 한 공간에서 창작하고 확장하며 소통하는 새로운 콘텐츠 경험”
 
+
+[배포 주소](https://www.textok.store)
+
 ---
 
 ## 📝 프로젝트 소개
@@ -56,7 +59,7 @@ TexTok은 **“짧은 글과 깊은 글의 자연스러운 연결”**이라는 
 ## 🗄️ ERD  
 | <img width="3390" height="1722" alt="Copy of NEXT 5 - 3차 프로젝트" src="https://github.com/user-attachments/assets/e45bde4a-7b19-44e8-939c-d4d5132de6ac" />|
 |:---------:|
-| https://www.erdcloud.com/d/xEpyYdG29HuG32Z7j |
+| [ERD](https://www.erdcloud.com/d/xEpyYdG29HuG32Z7j) |
 
 ---
 
