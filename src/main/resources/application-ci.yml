@@ -28,7 +28,7 @@ spring:
     open-in-view: false
 
   cache:
-    type: none  # CI 환경에서는 Redis 비활성화
+    type: none # CI 환경에서는 Redis 비활성화
 
   ai:
     openai:
@@ -65,8 +65,8 @@ logging:
 
 jwt:
   secret: ${JWT_SECRET}
-  access-exp: 3600000
-  refresh-exp: 604800000
+  access-exp: 10m
+  refresh-exp: 14d
 
 cloud:
   aws:

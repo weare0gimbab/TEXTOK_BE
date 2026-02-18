@@ -1,5 +1,6 @@
 package com.back.domain.user.refreshToken.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,6 @@ public class RefreshToken {
     public RefreshToken(Long userId, String token, Long expiration) {
         this.userId = userId;
         this.token = token;
-        this.expiration = expiration / 1000; // Redis TTL은 초 단위이므로 밀리초를 초로 변환
+        this.expiration = expiration;
     }
 }

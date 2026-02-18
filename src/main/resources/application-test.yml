@@ -38,5 +38,5 @@ logging:
 
 jwt:
   secret: ${JWT_SECRET}
-  access-exp: 3600000
-  refresh-exp: 604800000
+  access-exp: 10m
+  refresh-exp: 14d

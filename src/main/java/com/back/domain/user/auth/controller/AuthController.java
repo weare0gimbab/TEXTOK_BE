@@ -1,25 +1,40 @@
 package com.back.domain.user.auth.controller;
 
-import com.back.domain.user.auth.dto.*;
-import com.back.domain.user.refreshToken.service.RefreshTokenService;
-import com.back.domain.user.user.dto.*;
-import com.back.domain.user.user.entity.User;
+import java.util.Map;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.back.domain.user.auth.dto.OAuth2CompleteJoinRequestDto;
+import com.back.domain.user.auth.dto.PasswordResetRequestDto;
+import com.back.domain.user.auth.dto.UserJoinRequestDto;
+import com.back.domain.user.auth.dto.UserLoginRequestDto;
+import com.back.domain.user.auth.dto.UserLoginResponseDto;
 import com.back.domain.user.auth.service.AuthService;
+import com.back.domain.user.refreshToken.entity.RefreshToken;
+import com.back.domain.user.refreshToken.service.RefreshTokenService;
+import com.back.domain.user.user.dto.UserDto;
+import com.back.domain.user.user.entity.User;
 import com.back.global.config.security.SecurityUser;
 import com.back.global.config.security.jwt.JwtTokenProvider;
 import com.back.global.rq.Rq;
 import com.back.global.rsData.RsData;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api/v1/auth")
 @Tag(name = "Auth API", description = "인증 관련 API")
 public class AuthController {
@@ -36,8 +51,7 @@ public class AuthController {
         return new RsData<>(
                 "201-1",
                 "%s 님 가입을 환영합니다!".formatted(user.getUsername()),
-                new UserDto(user)
-        );
+                new UserDto(user));
     }
 
     @PostMapping("/complete-oauth2-join")
@@ -57,8 +71,7 @@ public class AuthController {
         return new RsData<>(
                 "201-1",
                 "%s 님 가입을 환영합니다!".formatted(user.getUsername()),
-                new UserDto(user)
-        );
+                new UserDto(user));
     }
 
     @PostMapping("/login")
@@ -74,11 +87,13 @@ public class AuthController {
         refreshTokenService.saveRefreshToken(user.getId(), refreshToken);
         rq.setCookie("refreshToken", refreshToken);
 
+        RefreshToken rt = refreshTokenService.getRefreshTokenByUserId(user.getId());
+        log.info("saved refreshToken exists? {}", rt != null);
+
         return new RsData<>(
                 "200-1",
                 "로그인 되었습니다.",
-                new UserLoginResponseDto(new UserDto(user), refreshToken, accessToken)
-        );
+                new UserLoginResponseDto(new UserDto(user), refreshToken, accessToken));
     }
 
     @DeleteMapping("/logout")
@@ -90,13 +105,12 @@ public class AuthController {
 
         return new RsData<>(
                 "200-1",
-                "로그아웃 되었습니다."
-        );
+                "로그아웃 되었습니다.");
     }
 
     @GetMapping("/check-username")
     @Operation(summary = "아이디 중복 확인")
-    public RsData<Map<String, Boolean>> checkUsernameAvailable(@RequestParam String username) {
+    public RsData<Map<String, Boolean>> checkUsernameAvailable(@RequestParam("username") String username) {
         boolean result = userService.isAvailableUsername(username);
         Map<String, Boolean> data = Map.of("isAvailable", result);
         if (result) {
@@ -128,8 +142,7 @@ public class AuthController {
         return new RsData<>(
                 "200-1",
                 "사용자 정보입니다.",
-                new UserDto(user)
-        );
+                new UserDto(user));
     }
 
     @DeleteMapping("/withdraw")
