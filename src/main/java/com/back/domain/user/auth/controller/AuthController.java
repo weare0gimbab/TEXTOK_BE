@@ -1,6 +1,7 @@
 package com.back.domain.user.auth.controller;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -137,12 +138,10 @@ public class AuthController {
 
     @GetMapping("/me")
     @Operation(summary = "프로필 조회")
-    public RsData<UserDto> me(@AuthenticationPrincipal SecurityUser user1) {
-        User user = userService.getUserById(user1.getId());
-        return new RsData<>(
-                "200-1",
-                "사용자 정보입니다.",
-                new UserDto(user));
+    public RsData<UserDto> me(@AuthenticationPrincipal SecurityUser principal) {
+        return userService.me(principal)
+                .map(u -> RsData.of("200-1", "사용자 정보입니다.", u))
+                .orElseGet(() -> RsData.of("200", "비로그인", null));
     }
 
     @DeleteMapping("/withdraw")

@@ -11,10 +11,12 @@ import com.back.domain.user.auth.dto.UserJoinRequestDto;
 import com.back.domain.user.auth.dto.UserLoginRequestDto;
 import com.back.domain.user.mail.service.VerificationTokenService;
 import com.back.domain.user.refreshToken.service.RefreshTokenService;
+import com.back.domain.user.user.dto.UserDto;
 import com.back.domain.user.user.entity.User;
 import com.back.domain.user.user.file.ProfileImageService;
 import com.back.domain.user.user.repository.UserDeletionJdbcRepository;
 import com.back.domain.user.user.repository.UserRepository;
+import com.back.global.config.security.SecurityUser;
 import com.back.global.config.security.jwt.JwtTokenProvider;
 import com.back.global.exception.AuthException;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -125,8 +128,12 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new AuthException("401-1", "존재하지 않는 회원입니다."));
+        User user = userRepository.findById(id)
+                .orElse(null);
+        if (user == null) {
+            throw new AuthException("404-1", "사용자를 찾을 수 없습니다.");
+        }
+        return user;
     }
 
     @Transactional(readOnly = true)
@@ -188,5 +195,11 @@ public class AuthService {
 
         // MySQL 데이터 완전 삭제 (JDBC 일괄 처리)
         userDeletionJdbcRepository.deleteUserCompletely(userId);
+    }
+
+    public Optional<UserDto> me(SecurityUser principal) {
+        if (principal == null)
+            return Optional.empty();
+        return userRepository.findById(principal.getId()).map(UserDto::new);
     }
 }

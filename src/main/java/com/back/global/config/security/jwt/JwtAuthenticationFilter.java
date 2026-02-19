@@ -110,6 +110,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // 인증 오류 처리
     private void handleCustomAuthError(HttpServletResponse res, String message) throws IOException {
+        if (res.isCommitted())
+            return;
         res.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 응답 상태를 401로 설정
         res.setContentType("application/json;charset=UTF-8"); // 응답 콘텐츠 타입 설정
 
@@ -124,8 +126,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.startsWith("/api/v1/auth")
-                || path.startsWith("/swagger-ui")
+        return path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")
                 || path.equals("/actuator/health");
     }
